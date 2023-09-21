@@ -1,0 +1,37 @@
+[
+  {
+    "name": "mojito",
+    "description": "sadasd akdsasdadkl kalskd lasd",
+    "url": "cook.com",
+    "ingredients": [
+      {
+        "ingredientsName": "rom",
+        "ingredientsAmount": "15",
+        "measure": "ml"
+      },
+      {
+        "ingredientsName": "lime",
+        "ingredientsAmount": "2",
+        "measure": "pcs"
+      }
+    ],
+    "mealType": "Cocktail",
+    "alcoholType": "alcohol",
+    "id": "2"
+  },
+  {
+    "id": "5ef0e173-df48-425b-90d0-2881e75e5199",
+    "description": "asdsadasdasdasd",
+    "url": "You didn't add any url",
+    "ingredients": [
+      {
+        "ingredientsName": "sugar",
+        "ingredientsAmount": "1",
+        "measure": "g"
+      }
+    ],
+    "mealType": "Meal",
+    "alcoholType": "",
+    "name": "rice"
+  }
+]
