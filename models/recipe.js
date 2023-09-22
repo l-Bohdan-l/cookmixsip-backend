@@ -45,7 +45,7 @@ export const updateRecipe = async (recipeId, body) => {
   const recipes = await db.read();
   const index = recipes.findIndex((recipe) => recipe.id === recipeId);
   if (index !== -1) {
-    recipes[index] = [...recipes[index], ...body];
+    recipes[index] = { ...recipes[index], ...body };
     await db.write(recipes);
     return recipes[index];
   }
