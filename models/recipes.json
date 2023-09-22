@@ -33,5 +33,20 @@
     "mealType": "Meal",
     "alcoholType": "",
     "name": "rice"
+  },
+  {
+    "id": "e8fe1358-1d09-4cd6-b541-ab5f22c0e02f",
+    "description": "1235",
+    "url": "You didn't add any url",
+    "ingredients": [
+      {
+        "ingredientsName": "sugar",
+        "ingredientsAmount": "1",
+        "measure": "g"
+      }
+    ],
+    "mealType": "Meal",
+    "alcoholType": "non-alcohol",
+    "name": "sec"
   }
 ]
