@@ -1,8 +1,9 @@
 import { randomUUID } from "crypto";
 
-import FileAdapter from "./db.js";
+import FileAdapter from "./db2.js";
 
-const db = new FileAdapter("recipes.json");
+// const db = new FileAdapter("recipes.json");
+import { db } from "./db.js";
 
 export const listRecipes = async () => {
   return await db.read();

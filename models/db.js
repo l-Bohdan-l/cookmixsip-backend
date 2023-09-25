@@ -1,23 +1,35 @@
-import fs from "fs/promises";
-import path, { join } from "path";
-import { fileURLToPath } from "url";
+import "dotenv/config";
+import { MongoClient, ServerApiVersion } from "mongodb";
+const uri = process.env.URI_DB;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-export default class FileAdapter {
-  constructor(file) {
-    this.file = file;
-  }
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const dbName = "cookmixsip";
 
-  async read() {
-    const result = await fs.readFile(join(__dirname, this.file), "utf-8");
-    return JSON.parse(result);
-  }
+await client.connect();
+export const db = client.db(dbName);
 
-  async write(data) {
-    await fs.writeFile(
-      join(__dirname, this.file),
-      JSON.stringify(data, null, 2)
-    );
-  }
+export async function run() {
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log("Connected successfully to server");
+  const db = client.db(dbName);
+  //   const collection = db.collection("documents");
+
+  // the following code examples can be pasted here...
+
+  return "done.";
 }
+
+process.on("SIGINT", async () => {
+  const client = await db;
+  client.close();
+  console.log("Disconnected from db");
+  process.exit(1);
+});
