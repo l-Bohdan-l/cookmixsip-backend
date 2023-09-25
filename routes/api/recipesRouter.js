@@ -45,14 +45,18 @@ router.delete("/:recipeId", async (req, res, next) => {
     .json({ status: "error", code: 404, message: "Not found" });
 });
 
-router.put("/:recipeId", async (req, res, next) => {
-  const recipe = await updateRecipe(req.params.recipeId, req.body);
-  if (recipe) {
-    return res.json({ status: "success", code: 200, payload: { recipe } });
+router.put(
+  "/:recipeId",
+  validateBody(recipeValidationSchema),
+  async (req, res, next) => {
+    const recipe = await updateRecipe(req.params.recipeId, req.body);
+    if (recipe) {
+      return res.json({ status: "success", code: 200, payload: { recipe } });
+    }
+    return res
+      .status(404)
+      .json({ status: "error", code: 404, message: "Not found" });
   }
-  return res
-    .status(404)
-    .json({ status: "error", code: 404, message: "Not found" });
-});
+);
 
 export default router;
