@@ -2,7 +2,7 @@ import "dotenv/config";
 import { MongoClient, ServerApiVersion } from "mongodb";
 const uri = process.env.URI_DB;
 
-const client = new MongoClient(uri, {
+export const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -28,8 +28,8 @@ export async function run() {
 }
 
 process.on("SIGINT", async () => {
-  const client = await db;
-  client.close();
   console.log("Disconnected from db");
+  await client.connect();
+  await client.close();
   process.exit(1);
 });

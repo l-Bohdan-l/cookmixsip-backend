@@ -6,8 +6,12 @@ import {
   removeRecipe,
   updateRecipe,
 } from "../../models/recipe.js";
-import { recipeValidationSchema } from "./recipe-validation-schema.js";
-import { validateBody } from "../../middlewares/validation.js";
+import {
+  recipeValidationSchema,
+  updatedRecipeValidationSchema,
+  schemaMongoId,
+} from "./recipe-validation-schema.js";
+import { validateBody, validateParams } from "../../middlewares/validation.js";
 
 const router = Router();
 
@@ -16,15 +20,19 @@ router.get("/", async (req, res, next) => {
   return res.json({ status: "success", code: 200, payload: { recipes } });
 });
 
-router.get("/:recipeId", async (req, res, next) => {
-  const recipe = await getRecipeById(req.params.recipeId);
-  if (recipe) {
-    return res.json({ status: "success", code: 200, payload: { recipe } });
+router.get(
+  "/:recipeId",
+  validateParams(schemaMongoId),
+  async (req, res, next) => {
+    const recipe = await getRecipeById(req.params.recipeId);
+    if (recipe) {
+      return res.json({ status: "success", code: 200, payload: { recipe } });
+    }
+    return res
+      .status(404)
+      .json({ status: "error", code: 404, message: "Not found" });
   }
-  return res
-    .status(404)
-    .json({ status: "error", code: 404, message: "Not found" });
-});
+);
 
 router.post(
   "/",
@@ -35,19 +43,23 @@ router.post(
   }
 );
 
-router.delete("/:recipeId", async (req, res, next) => {
-  const recipe = await removeRecipe(req.params.recipeId);
-  if (recipe) {
-    return res.json({ status: "success", code: 200, payload: { recipe } });
+router.delete(
+  "/:recipeId",
+  validateParams(schemaMongoId),
+  async (req, res, next) => {
+    const recipe = await removeRecipe(req.params.recipeId);
+    if (recipe) {
+      return res.json({ status: "success", code: 200, payload: { recipe } });
+    }
+    return res
+      .status(404)
+      .json({ status: "error", code: 404, message: "Not found" });
   }
-  return res
-    .status(404)
-    .json({ status: "error", code: 404, message: "Not found" });
-});
+);
 
 router.put(
   "/:recipeId",
-  validateBody(recipeValidationSchema),
+  [validateBody(updatedRecipeValidationSchema), validateParams(schemaMongoId)],
   async (req, res, next) => {
     const recipe = await updateRecipe(req.params.recipeId, req.body);
     if (recipe) {
