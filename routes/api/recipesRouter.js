@@ -1,11 +1,18 @@
 import { Router } from "express";
+// import {
+//   addRecipe,
+//   getRecipeById,
+//   listRecipes,
+//   removeRecipe,
+//   updateRecipe,
+// } from "../../models/recipe.js";
 import {
   addRecipe,
   getRecipeById,
   listRecipes,
   removeRecipe,
   updateRecipe,
-} from "../../models/recipe.js";
+} from "../../repository/recipes.js";
 import {
   recipeValidationSchema,
   updatedRecipeValidationSchema,

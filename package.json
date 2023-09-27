@@ -17,6 +17,7 @@
     "joi": "17.10.2",
     "joi-objectid": "^4.0.2",
     "mongodb": "^6.1.0",
+    "mongoose": "^7.5.3",
     "morgan": "1.10.0"
   },
   "devDependencies": {
