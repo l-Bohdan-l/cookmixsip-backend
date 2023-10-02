@@ -5,6 +5,27 @@ import {
 } from "../libs/constants.js";
 
 const { Schema } = mongoose;
+const ingredientsSchema = new Schema(
+  {
+    ingredientsName: { type: String },
+    ingredientsAmount: { type: Number },
+    measure: { type: String },
+  },
+  {
+    timestamps: false,
+    versionKey: false,
+    toJSON: {
+      virtuals: false,
+      transform: (doc, ret) => {
+        delete ret._id;
+        return ret;
+      },
+    },
+    toObject: { virtuals: false },
+  }
+);
+
+const Ingredients = model("ingredients", ingredientsSchema);
 
 const recipeSchema = new Schema(
   {
@@ -16,13 +37,15 @@ const recipeSchema = new Schema(
     },
     description: { type: String },
     url: { type: String },
-    ingredients: [
-      {
-        ingredientsName: { type: String },
-        ingredientsAmount: { type: Number },
-        measure: { type: String },
-      },
-    ],
+    ingredients: [ingredientsSchema],
+    //   [
+    //   {
+    //     ingredientsName: { type: String },
+    //     ingredientsAmount: { type: Number },
+    //     measure: { type: String },
+    //   },
+    //   ]
+    // ,
     mealType: {
       type: String,
       required: true,
@@ -31,7 +54,17 @@ const recipeSchema = new Schema(
     },
     alcoholType: { type: String },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret._id;
+        return ret;
+      },
+    },
+    toObject: { virtuals: true },
+  }
 ); //versionKey: false
 
 export const Recipe = model("recipe", recipeSchema);
