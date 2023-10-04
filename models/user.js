@@ -1,5 +1,6 @@
 import mongoose, { model } from "mongoose";
-import { LIMIT_NAME_LENGTH } from "../libs/constants.js";
+import { LIMIT_NAME_LENGTH, Role } from "../libs/constants.js";
+import bcrypt from "bcryptjs";
 
 const { Schema } = mongoose;
 
@@ -24,6 +25,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    token: {
+      type: String,
+      default: null,
+    },
+    role: {
+      type: String,
+      enum: { values: Object.values(Role), message: "Invalid role" },
+      default: Role.USER,
+    },
   },
   {
     timestamps: true,
@@ -38,5 +48,17 @@ const userSchema = new Schema(
     toObject: { virtuals: true },
   }
 );
+
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    const salt = await bcrypt.getSalt(6);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  next();
+});
+
+userSchema.methods.isValidPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 export const User = model("user", userSchema);
