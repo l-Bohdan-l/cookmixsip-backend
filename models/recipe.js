@@ -56,6 +56,7 @@ const recipeSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
     toJSON: {
       virtuals: true,
       transform: (doc, ret) => {
