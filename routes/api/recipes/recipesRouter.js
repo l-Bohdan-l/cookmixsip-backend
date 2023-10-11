@@ -4,14 +4,17 @@ import {
   updatedRecipeValidationSchema,
   schemaMongoId,
 } from "./recipe-validation-schema.js";
-import { validateBody, validateParams } from "../../middlewares/validation.js";
+import {
+  validateBody,
+  validateParams,
+} from "../../../middlewares/validation.js";
 import {
   addRecipeController,
   getRecipeByIdController,
   listRecipesController,
   removeRecipeController,
   updateRecipeController,
-} from "../../controllers/recipes/index.js";
+} from "../../../controllers/recipes/index.js";
 
 const router = Router();
 

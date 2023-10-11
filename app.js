@@ -2,7 +2,9 @@ import express, { json } from "express";
 import logger from "morgan";
 import cors from "cors";
 
-import router from "./routes/api/recipesRouter.js";
+import recipeRouter from "./routes/api/recipes/recipesRouter.js";
+import authRouter from "./routes/api/auth/authRouter.js";
+
 import { HTTP_STATUS_CODES } from "./libs/constants.js";
 
 const app = express();
@@ -16,7 +18,8 @@ app.use((req, res) => {
   app.set("lang", req.acceptsLanguages(["en", "uk"]) || "en");
 });
 
-app.use("/api/recipes", router);
+app.use("/api/auth", authRouter);
+app.use("/api/recipes", recipeRouter);
 
 app.use((req, res) => {
   res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: "Not found" });
