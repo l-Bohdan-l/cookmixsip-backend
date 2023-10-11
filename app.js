@@ -14,9 +14,10 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(json());
-// app.use((req, res) => {
-//   app.set("lang", req.acceptsLanguages(["en", "uk"]) || "en");
-// });
+app.use((req, res, next) => {
+  app.set("lang", req.acceptsLanguages(["en", "uk"]) || "en");
+  next();
+});
 
 app.use("/api/auth", authRouter);
 app.use("/api/recipes", recipeRouter);
