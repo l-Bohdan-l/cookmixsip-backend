@@ -16,36 +16,37 @@ import {
   updateRecipeController,
 } from "../../../controllers/recipes/index.js";
 import { guard } from "../../../middlewares/guard.js";
+import { wrapper } from "../../../middlewares/errorHandler.js";
 const router = Router();
 
-router.get("/", guard, listRecipesController);
+router.get("/", guard, wrapper(listRecipesController));
 
 router.get(
   "/:recipeId",
   guard,
   validateParams(schemaMongoId),
-  getRecipeByIdController
+  wrapper(getRecipeByIdController)
 );
 
 router.post(
   "/",
   guard,
   validateBody(recipeValidationSchema),
-  addRecipeController
+  wrapper(addRecipeController)
 );
 
 router.delete(
   "/:recipeId",
   guard,
   validateParams(schemaMongoId),
-  removeRecipeController
+  wrapper(removeRecipeController)
 );
 
 router.put(
   "/:recipeId",
   guard,
   [validateBody(updatedRecipeValidationSchema), validateParams(schemaMongoId)],
-  updateRecipeController
+  wrapper(updateRecipeController)
 );
 
 export default router;

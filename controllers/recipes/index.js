@@ -1,14 +1,9 @@
-import {
-  addRecipe,
-  getRecipeById,
-  listRecipes,
-  removeRecipe,
-  updateRecipe,
-} from "../../repository/recipes.js";
 import { HTTP_STATUS_CODES } from "../../libs/constants.js";
+import recipesServices from "../../services/recipes/index.js";
 
-export const listRecipesController = async (req, res, next) => {
-  const recipes = await listRecipes();
+export const listRecipesController = async (req, res) => {
+  const recipes = await recipesServices.getAll(req.query, req.user);
+
   return res.json({
     status: "success",
     code: HTTP_STATUS_CODES.OK,
@@ -17,23 +12,16 @@ export const listRecipesController = async (req, res, next) => {
 };
 
 export const getRecipeByIdController = async (req, res, next) => {
-  const recipe = await getRecipeById(req.params.recipeId);
-  if (recipe) {
-    return res.json({
-      status: "success",
-      code: HTTP_STATUS_CODES.OK,
-      payload: { recipe },
-    });
-  }
-  return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
-    status: "error",
-    code: HTTP_STATUS_CODES.NOT_FOUND,
-    message: "Not found",
+  const recipe = await recipesServices.getById(req.params.recipeId, req.user);
+  return res.json({
+    status: "success",
+    code: HTTP_STATUS_CODES.OK,
+    payload: { recipe },
   });
 };
 
 export const addRecipeController = async (req, res, next) => {
-  const recipe = await addRecipe(req.body);
+  const recipe = await recipesServices.create(req.body, req.user);
   res.status(HTTP_STATUS_CODES.CREATED).json({
     status: "success",
     code: HTTP_STATUS_CODES.CREATED,
@@ -42,37 +30,25 @@ export const addRecipeController = async (req, res, next) => {
 };
 
 export const removeRecipeController = async (req, res, next) => {
-  const recipe = await removeRecipe(req.params.recipeId);
-  if (recipe) {
-    return res.json({
-      status: "success",
-      code: HTTP_STATUS_CODES.OK,
-      payload: { recipe },
-    });
-  }
-  return res
-    .status(HTTP_STATUS_CODES.NOT_FOUND)
-    .json({
-      status: "error",
-      code: HTTP_STATUS_CODES.NOT_FOUND,
-      message: "Not found",
-    });
+  const recipe = await recipesServices.remove(req.params.recipeId, req.user);
+
+  return res.json({
+    status: "success",
+    code: HTTP_STATUS_CODES.OK,
+    payload: { recipe },
+  });
 };
 
 export const updateRecipeController = async (req, res, next) => {
-  const recipe = await updateRecipe(req.params.recipeId, req.body);
-  if (recipe) {
-    return res.json({
-      status: "success",
-      code: HTTP_STATUS_CODES.OK,
-      payload: { recipe },
-    });
-  }
-  return res
-    .status(HTTP_STATUS_CODES.NOT_FOUND)
-    .json({
-      status: "error",
-      code: HTTP_STATUS_CODES.NOT_FOUND,
-      message: "Not found",
-    });
+  const recipe = await recipesServices.update(
+    req.params.recipeId,
+    req.body,
+    req.user
+  );
+
+  return res.json({
+    status: "success",
+    code: HTTP_STATUS_CODES.OK,
+    payload: { recipe },
+  });
 };

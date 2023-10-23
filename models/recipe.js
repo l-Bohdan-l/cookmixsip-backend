@@ -29,6 +29,11 @@ const Ingredients = model("ingredients", ingredientsSchema);
 
 const recipeSchema = new Schema(
   {
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -66,6 +71,6 @@ const recipeSchema = new Schema(
     },
     toObject: { virtuals: true },
   }
-); //versionKey: false
+); // versionKey: false
 
 export const Recipe = model("recipe", recipeSchema);
