@@ -1,8 +1,16 @@
 import { Recipe } from "../models/recipe.js";
 
-export const listRecipes = async (query, user) => {
-  const result = await Recipe.find({ owner: user.id });
-  return result;
+export const listRecipes = async (
+  { limit, skip, sortCriteria, select },
+  user
+) => {
+  const total = await Recipe.countDocuments({ owner: user.id });
+  const results = await Recipe.find({ owner: user.id })
+    .select(select)
+    .skip(skip)
+    .limit(limit)
+    .sort(sortCriteria);
+  return { total, results };
 };
 
 export const getRecipeById = async (recipeId, user) => {

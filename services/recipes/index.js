@@ -10,9 +10,25 @@ import { CustomError } from "../../middlewares/errorHandler.js";
 
 class RecipesService {
   async getAll(query, user) {
-    console.log("id", user.id);
-    const recipes = await listRecipes(query, user);
-    return recipes;
+    const { limit = 5, skip = 0, sortBy, sortByDesc, filter } = query;
+    let sortCriteria = null;
+    let select = null;
+
+    if (sortBy) {
+      sortCriteria = { [sortBy]: 1 };
+    }
+    if (sortByDesc) {
+      sortCriteria = { [sortByDesc]: 1 };
+    }
+
+    if (filter) {
+      select = filter.split("|").join(" ");
+    }
+    const { total, results: recipes } = await listRecipes(
+      { limit, skip, sortCriteria, select },
+      user
+    );
+    return { total, recipes };
   }
 
   async getById(id, user) {

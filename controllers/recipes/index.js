@@ -7,7 +7,7 @@ export const listRecipesController = async (req, res) => {
   return res.json({
     status: "success",
     code: HTTP_STATUS_CODES.OK,
-    payload: { recipes },
+    payload: { ...recipes },
   });
 };
 
