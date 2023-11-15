@@ -18,17 +18,22 @@ class RecipesService {
       sortCriteria = { [sortBy]: 1 };
     }
     if (sortByDesc) {
-      sortCriteria = { [sortByDesc]: 1 };
+      sortCriteria = { [sortByDesc]: -1 };
     }
 
     if (filter) {
       select = filter.split("|").join(" ");
     }
-    const { total, results: recipes } = await listRecipes(
+    // const { total, results: recipes } = await listRecipes(
+    //   { limit, skip, sortCriteria, select },
+    //   user
+    // );
+
+    const result = await listRecipes(
       { limit, skip, sortCriteria, select },
       user
     );
-    return { total, recipes };
+    return result;
   }
 
   async getById(id, user) {

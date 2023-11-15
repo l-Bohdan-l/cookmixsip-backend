@@ -1,4 +1,5 @@
 import mongoose, { model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 import {
   LIMIT_NAME_LENGTH,
   LIMIT_MEAL_TYPE_LENGTH,
@@ -72,5 +73,6 @@ const recipeSchema = new Schema(
     toObject: { virtuals: true },
   }
 ); // versionKey: false
+recipeSchema.plugin(paginate);
 
 export const Recipe = model("recipe", recipeSchema);
