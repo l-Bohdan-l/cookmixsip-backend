@@ -1,6 +1,7 @@
 import mongoose, { model } from "mongoose";
 import { LIMIT_NAME_LENGTH, Role } from "../libs/constants.js";
 import bcrypt from "bcryptjs";
+import gravatar from "gravatar";
 
 const { Schema } = mongoose;
 
@@ -33,6 +34,12 @@ const userSchema = new Schema(
       type: String,
       enum: { values: Object.values(Role), message: "Invalid role" },
       default: Role.USER,
+    },
+    avatar: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, { s: "250" }, true);
+      },
     },
   },
   {

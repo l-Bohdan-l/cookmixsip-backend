@@ -5,6 +5,7 @@ import helmet from "helmet";
 
 import recipeRouter from "./routes/api/recipes/recipesRouter.js";
 import authRouter from "./routes/api/auth/authRouter.js";
+import usersRouter from "./routes/api/users/usersRouter.js";
 
 import { HTTP_STATUS_CODES } from "./libs/constants.js";
 import { limiter } from "./middlewares/rate-limit.js";
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/recipes", recipeRouter);
 
 app.use((req, res) => {
